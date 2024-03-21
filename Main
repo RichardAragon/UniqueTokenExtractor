@@ -1,0 +1,32 @@
+from transformers import AutoTokenizer
+
+def compare_vocab_sizes_and_extract_unique_tokens(model1_name, model2_name):
+    tokenizer1 = AutoTokenizer.from_pretrained(model1_name)
+    tokenizer2 = AutoTokenizer.from_pretrained(model2_name)
+
+    vocab1 = set(tokenizer1.vocab.keys())
+    vocab2 = set(tokenizer2.vocab.keys())
+
+    unique_tokens_model1 = vocab1 - vocab2
+    unique_tokens_model2 = vocab2 - vocab1
+
+    print(f"Vocabulary size - {model1_name}: {len(vocab1)}, {model2_name}: {len(vocab2)}")
+    print(f"Unique tokens in {model1_name}: {len(unique_tokens_model1)}")
+    print(f"Unique tokens in {model2_name}: {len(unique_tokens_model2)}")
+
+    # Extract and print unique tokens from the model with more unique tokens
+    if len(unique_tokens_model1) > len(unique_tokens_model2):
+        print(f"\nModel {model1_name} has more unique tokens. Here are the unique tokens:")
+        print(unique_tokens_model1)
+    else:
+        print(f"\nModel {model2_name} has more unique tokens. Here are the unique tokens:")
+        print(unique_tokens_model2)
+
+def main():
+    model1_name = input("Enter the name of the first model: ")
+    model2_name = input("Enter the name of the second model: ")
+    
+    compare_vocab_sizes_and_extract_unique_tokens(model1_name, model2_name)
+
+if __name__ == "__main__":
+    main()
